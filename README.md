@@ -1,4 +1,4 @@
-# ALEXIS Portfolio - React Implementation
+# Deepan D Portfolio - React Implementation
 
 This is a pixel-perfect React implementation of the ALEXIS portfolio design featuring a "Liquid Glass" aesthetic with glassmorphism effects.
 
