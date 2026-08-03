@@ -12,7 +12,7 @@ function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div>
-            <div className="font-headline-md text-2xl font-black tracking-tighter text-vibrant-yellow bg-vibrant-yellow/10 px-3.5 py-1.5 rounded-xl inline-block mb-4 border border-vibrant-yellow/20 shadow-[0_0_15px_rgba(244,255,0,0.15)]">
+            <div className="font-headline-md text-2xl font-black tracking-tighter text-white bg-vibrant-red px-3.5 py-1.5 rounded-xl inline-block mb-4 border border-white/20 shadow-[0_0_20px_rgba(255,30,75,0.4)]">
               DEEPAN D®
             </div>
             <p className="font-body-md text-on-surface-variant text-sm leading-relaxed">
@@ -39,7 +39,7 @@ function Footer() {
               <li className="text-on-surface-variant text-sm">Fullstack Web Development</li>
               <li className="text-on-surface-variant text-sm">SRM Research Engineering</li>
               <li className="text-on-surface-variant text-sm">Hackathon Innovation</li>
-              <li className="text-on-surface-variant text-sm">Marquee Batch 2028 Cohort</li>
+              <li className="text-on-surface-variant text-sm">Marquee Batch 2024-2028 Cohort</li>
               <li className="text-on-surface-variant text-sm">React & Next.js Architecture</li>
             </ul>
           </div>
@@ -48,15 +48,18 @@ function Footer() {
           <div>
             <h3 className="font-label-caps text-xs text-white mb-4 tracking-wider uppercase font-bold">Connect</h3>
             <div className="flex gap-3 mb-4">
-              <a href="https://github.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 hover:border-vibrant-yellow/40 transition-all text-white text-sm">
+              <a href="https://github.com/Deepan9884" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 hover:border-[#ff1e4b]/40 transition-all text-white text-sm">
                 <span className="material-symbols-outlined text-base">code</span>
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 hover:border-vibrant-yellow/40 transition-all text-white text-sm font-bold">
+              <a href="https://www.linkedin.com/in/deepan-d-b00a5b327/" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 hover:border-[#ff1e4b]/40 transition-all text-white text-sm font-bold">
                 in
               </a>
             </div>
-            <p className="text-on-surface-variant text-sm font-mono">
-              deepan.d@easwari.ac.in
+            <p className="text-on-surface-variant text-sm font-mono mb-1">
+              <a href="mailto:deepan9210@gmail.com" className="hover:text-[#ff1e4b] transition-colors">deepan9210@gmail.com</a>
+            </p>
+            <p className="text-on-surface-variant text-xs font-mono">
+              <a href="tel:9884932408" className="hover:text-[#ff1e4b] transition-colors">+91 9884932408</a>
             </p>
           </div>
         </div>

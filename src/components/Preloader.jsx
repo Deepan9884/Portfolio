@@ -64,7 +64,7 @@ export default function Preloader() {
                 initial={{ width: '0%' }}
                 animate={{ width: '100%' }}
                 transition={{ duration: 1.5, ease: 'circOut' }}
-                className="h-full bg-vibrant-yellow rounded-full shadow-[0_0_15px_rgba(244,255,0,0.9)]"
+                className="h-full bg-vibrant-yellow rounded-full shadow-[0_0_20px_rgba(255,30,75,0.8)]"
               />
             </div>
 

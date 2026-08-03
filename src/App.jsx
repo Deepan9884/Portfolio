@@ -6,7 +6,7 @@ import ExperienceSection from './components/ExperienceSection'
 import TimelineSection from './components/TimelineSection'
 import ProjectsSection from './components/ProjectsSection'
 import CapabilitiesSection from './components/CapabilitiesSection'
-import ServicesSection from './components/ServicesSection'
+import HackathonsSection from './components/HackathonsSection'
 import FAQSection from './components/FAQSection'
 import CTASection from './components/CTASection'
 import ContactSection from './components/ContactSection'
@@ -47,9 +47,9 @@ function App() {
         {/* Multi-layered Liquid Glass Cursor */}
         <CustomCursor />
         
-        {/* Scroll Progress Indicator with Glass Glow */}
+        {/* Scroll Progress Indicator with Glass Red Glow */}
         <motion.div
-          className="fixed top-0 left-0 right-0 h-1 bg-vibrant-yellow origin-left z-[100] shadow-[0_0_12px_#f4ff00]"
+          className="fixed top-0 left-0 right-0 h-1 bg-[#ff1e4b] origin-left z-[100] shadow-[0_0_15px_#ff1e4b]"
           style={{ scaleX: scrollYProgress }}
         />
 
@@ -97,16 +97,16 @@ function App() {
               <CapabilitiesSection />
             </FadeInSection>
             
-            <FadeInSection direction="right">
-              <ServicesSection />
-            </FadeInSection>
-            
             <FadeInSection direction="up">
-              <FAQSection />
+              <HackathonsSection />
             </FadeInSection>
             
             <FadeInSection direction="up">
               <CTASection />
+            </FadeInSection>
+            
+            <FadeInSection direction="up">
+              <FAQSection />
             </FadeInSection>
             
             <FadeInSection direction="up">

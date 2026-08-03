@@ -38,7 +38,7 @@ export default function CustomCursor() {
       if (now - lastEmitRef.current > 35) {
         lastEmitRef.current = now
         const id = particleIdRef.current++
-        const color = id % 2 === 0 ? 'rgba(255, 30, 75, 0.7)' : 'rgba(157, 0, 255, 0.7)'
+        const color = id % 2 === 0 ? 'rgba(255, 30, 75, 0.7)' : 'rgba(255, 255, 255, 0.7)'
         setParticles((prev) => [
           ...prev.slice(-14), // max 14 particles
           { id, x: clientX, y: clientY, size: Math.random() * 5 + 3, color }
@@ -109,7 +109,7 @@ export default function CustomCursor() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[9999] overflow-hidden">
-      {/* 1. Trailing Red & Lightning Violet Particles */}
+      {/* 1. Trailing Red & Crisp White Particles */}
       {particles.map((p) => (
         <motion.div
           key={p.id}
@@ -132,7 +132,7 @@ export default function CustomCursor() {
 
       {/* 2. Tier 3: Outer Glass Halo Aura */}
       <motion.div
-        className="fixed top-0 left-0 w-16 h-16 rounded-full border border-lightning-violet/40 backdrop-blur-[6px] bg-white/[0.02] shadow-[0_0_25px_rgba(157,0,255,0.25)] pointer-events-none"
+        className="fixed top-0 left-0 w-16 h-16 rounded-full border border-vibrant-red/40 backdrop-blur-[6px] bg-white/[0.02] shadow-[0_0_25px_rgba(255,30,75,0.3)] pointer-events-none"
         style={{
           x: haloX,
           y: haloY,
@@ -143,8 +143,8 @@ export default function CustomCursor() {
         animate={{
           scale: isMouseDown ? 0.8 : isPointer ? 1.6 : isTextHover ? 1.4 : 1,
           borderColor: isPointer
-            ? 'rgba(255, 30, 75, 0.8)'
-            : 'rgba(157, 0, 255, 0.4)'
+            ? 'rgba(255, 30, 75, 0.9)'
+            : 'rgba(255, 255, 255, 0.4)'
         }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
       />
@@ -162,9 +162,9 @@ export default function CustomCursor() {
         animate={{
           scale: isMouseDown ? 0.6 : isPointer ? 1.4 : isTextHover ? 1.2 : 1,
           backgroundColor: isPointer
-            ? 'rgba(157, 0, 255, 0.25)'
+            ? 'rgba(255, 30, 75, 0.25)'
             : isTextHover
-            ? 'rgba(255, 30, 75, 0.15)'
+            ? 'rgba(255, 255, 255, 0.15)'
             : 'rgba(0, 0, 0, 0)'
         }}
         transition={{ duration: 0.15, ease: 'easeOut' }}

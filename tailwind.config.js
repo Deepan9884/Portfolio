@@ -56,10 +56,11 @@ export default {
         'secondary-fixed-dim': '#ecb2ff',
         'on-secondary-container': '#e59dff',
         
-        // Red & Lightning Violet Palette
+        // Red & Crisp White Executive Palette
         'vibrant-red': '#ff1e4b',
-        'lightning-violet': '#9d00ff',
-        'vibrant-yellow': '#ff1e4b', // Alias for backward compatibility
+        'crimson-red': '#e61943',
+        'lightning-violet': '#ff1e4b',
+        'vibrant-yellow': '#ff1e4b', // Alias for backward compatibility mapped to Electric Red
       },
       borderRadius: {
         DEFAULT: '0.25rem',

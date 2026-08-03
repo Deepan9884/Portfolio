@@ -91,7 +91,7 @@ function ServicesSection() {
             <div className="specular-edge"></div>
             <div className="inner-glow"></div>
             {service.highlighted && (
-              <div className="absolute top-4 right-4 bg-vibrant-yellow text-black text-xs font-label-caps px-3 py-1 rounded-full">
+              <div className="absolute top-4 right-4 bg-vibrant-red text-white text-xs font-label-caps px-3 py-1 rounded-full font-bold shadow-[0_0_15px_rgba(255,30,75,0.4)]">
                 POPULAR
               </div>
             )}
@@ -114,7 +114,7 @@ function ServicesSection() {
 
               <button className={`w-full py-3 rounded-xl font-label-caps text-label-caps font-bold transition-all duration-300 ${
                 service.highlighted 
-                  ? 'bg-vibrant-yellow text-black hover:shadow-[0_0_20px_rgba(244,255,0,0.4)]' 
+                  ? 'bg-vibrant-red text-white hover:shadow-[0_0_20px_rgba(255,30,75,0.5)]' 
                   : 'bg-white/5 text-white border border-white/20 hover:bg-white/10'
               }`}>
                 Get Started
