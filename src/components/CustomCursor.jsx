@@ -141,7 +141,8 @@ export default function CustomCursor() {
           opacity: isVisible ? 1 : 0
         }}
         animate={{
-          scale: isMouseDown ? 0.8 : isPointer ? 1.6 : isTextHover ? 1.4 : 1,
+          scale: isMouseDown ? 0.3 : isPointer ? 0.35 : isTextHover ? 1.2 : 1,
+          opacity: isPointer ? 0.3 : isVisible ? 1 : 0,
           borderColor: isPointer
             ? 'rgba(255, 30, 75, 0.9)'
             : 'rgba(255, 255, 255, 0.4)'
@@ -160,9 +161,9 @@ export default function CustomCursor() {
           opacity: isVisible ? 1 : 0
         }}
         animate={{
-          scale: isMouseDown ? 0.6 : isPointer ? 1.4 : isTextHover ? 1.2 : 1,
+          scale: isMouseDown ? 0.3 : isPointer ? 0.3 : isTextHover ? 1.1 : 1,
           backgroundColor: isPointer
-            ? 'rgba(255, 30, 75, 0.25)'
+            ? 'rgba(255, 30, 75, 0.3)'
             : isTextHover
             ? 'rgba(255, 255, 255, 0.15)'
             : 'rgba(0, 0, 0, 0)'
@@ -170,9 +171,9 @@ export default function CustomCursor() {
         transition={{ duration: 0.15, ease: 'easeOut' }}
       />
 
-      {/* 4. Tier 1: Core Precision Dot */}
+      {/* 4. Tier 1: Core Precision Pointer Arrow */}
       <motion.div
-        className="fixed top-0 left-0 w-2.5 h-2.5 bg-vibrant-red rounded-full pointer-events-none shadow-[0_0_12px_#ff1e4b]"
+        className="fixed top-0 left-0 flex items-center justify-center pointer-events-none"
         style={{
           x: dotX,
           y: dotY,
@@ -181,10 +182,18 @@ export default function CustomCursor() {
           opacity: isVisible ? 1 : 0
         }}
         animate={{
-          scale: isMouseDown ? 1.8 : isPointer ? 0.4 : 1
+          scale: isMouseDown ? 0.8 : isPointer ? 1.1 : 1
         }}
         transition={{ duration: 0.1 }}
-      />
+      >
+        {isPointer ? (
+          <span className="material-symbols-outlined text-[#ff1e4b] text-base font-black drop-shadow-[0_0_12px_#ff1e4b] -rotate-45">
+            near_me
+          </span>
+        ) : (
+          <div className="w-2.5 h-2.5 bg-vibrant-red rounded-full shadow-[0_0_12px_#ff1e4b]" />
+        )}
+      </motion.div>
     </div>
   )
 }

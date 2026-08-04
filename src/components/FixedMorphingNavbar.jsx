@@ -4,12 +4,12 @@ import { motion, useTransform, useScroll } from 'framer-motion'
 const NAV_ITEMS = [
   // Left Group in Hero (left of portrait)
   { id: 'home', label: 'HOME', icon: 'home', startLeft: '4%', endTop: 260, hasPipe: true },
-  { id: 'timeline', label: 'ABOUT ME', icon: 'person', startLeft: '13%', endTop: 298, hasPipe: true },
-  { id: 'projects', label: 'PROJECTS', icon: 'layers', startLeft: '23%', endTop: 336, hasPipe: false },
+  { id: 'experience', label: 'ROLES', icon: 'bolt', startLeft: '13%', endTop: 298, hasPipe: true },
+  { id: 'timeline', label: 'ABOUT ME', icon: 'person', startLeft: '23%', endTop: 336, hasPipe: false },
   
   // Right Group in Hero (right of portrait)
-  { id: 'capabilities', label: 'SKILLS', icon: 'redeem', startLeft: '58%', endTop: 374, hasPipe: true },
-  { id: 'experience', label: 'ROLES', icon: 'bolt', startLeft: '67%', endTop: 412, hasPipe: true },
+  { id: 'projects', label: 'PROJECTS', icon: 'layers', startLeft: '58%', endTop: 374, hasPipe: true },
+  { id: 'capabilities', label: 'SKILLS', icon: 'redeem', startLeft: '67%', endTop: 412, hasPipe: true },
   { id: 'hackathons', label: 'ACHIEVEMENTS', icon: 'emoji_events', startLeft: '76%', endTop: 450, hasPipe: true },
   { id: 'faq', label: 'FAQ', icon: 'help', startLeft: '91%', endTop: 488, hasPipe: false },
 ]
@@ -17,6 +17,7 @@ const NAV_ITEMS = [
 function FixedMorphingNavbar({ scrollY, progress: propProgress }) {
   const [activeSection, setActiveSection] = useState('home')
   const [copied, setCopied] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   const { scrollY: defaultScrollY } = useScroll()
   const fallbackProgress = useTransform(scrollY || defaultScrollY, [0, 250], [0, 1])
@@ -62,9 +63,61 @@ function FixedMorphingNavbar({ scrollY, progress: propProgress }) {
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-40">
       
-      {/* === 1. DOCKED SIDEBAR PANEL CONTAINER === */}
+      {/* === MOBILE FLOATING NAVIGATION BUTTON & DRAWER (< 768px) === */}
+      <div className="md:hidden fixed top-5 right-5 z-50 pointer-events-auto">
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="w-12 h-12 rounded-2xl bg-[#09090b]/90 border border-white/20 backdrop-blur-2xl text-white flex items-center justify-center shadow-[0_0_25px_rgba(255,30,75,0.4)] active:scale-95 transition-transform"
+          aria-label="Toggle navigation menu"
+        >
+          <span className="material-symbols-outlined text-2xl text-[#ff1e4b]">
+            {mobileMenuOpen ? 'close' : 'menu'}
+          </span>
+        </button>
+
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: -10 }}
+            className="absolute top-16 right-0 w-[280px] bg-[#09090b]/95 backdrop-blur-3xl border border-white/15 rounded-3xl p-5 shadow-[0_0_50px_rgba(0,0,0,0.9)] flex flex-col gap-2.5 z-50"
+          >
+            <div className="font-display-lg text-xs font-black text-[#ff1e4b] border-b border-white/10 pb-2 flex items-center justify-between">
+              <span>NAVIGATION</span>
+              <span className="text-[10px] text-white/50 font-mono">DEEPAN D</span>
+            </div>
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-3.5 py-2.5 rounded-2xl font-label-caps text-xs font-bold transition-all ${
+                  activeSection === item.id 
+                    ? 'bg-[#ff1e4b] text-white shadow-[0_0_20px_rgba(255,30,75,0.5)] font-black' 
+                    : 'bg-white/5 text-white/80 hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className={`material-symbols-outlined text-base ${activeSection === item.id ? 'text-white' : 'text-[#ff1e4b]'}`}>{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              </a>
+            ))}
+
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="w-full py-3 rounded-2xl bg-[#ff1e4b] text-white font-label-caps text-xs font-black uppercase text-center shadow-[0_0_20px_rgba(255,30,75,0.5)] mt-2"
+            >
+              Get In Touch
+            </a>
+          </motion.div>
+        )}
+      </div>
+
+      {/* === 1. DOCKED SIDEBAR PANEL CONTAINER (Desktop >= 768px) === */}
       <motion.aside
-        className="absolute top-0 left-0 h-screen w-[310px] bg-[#0a0a0a]/95 backdrop-blur-3xl border-r border-white/10 pointer-events-auto shadow-2xl z-35 p-4 flex flex-col justify-between overflow-y-auto hide-scroll"
+        className="hidden md:flex absolute top-0 left-0 h-screen w-[310px] bg-[#0a0a0a]/95 backdrop-blur-3xl border-r border-white/10 pointer-events-auto shadow-2xl z-35 p-4 flex-col justify-between overflow-y-auto hide-scroll"
         style={{ opacity: sidebarOpacity, x: sidebarX }}
       >
         <div className="flex flex-col gap-3 pt-1">
@@ -134,6 +187,28 @@ function FixedMorphingNavbar({ scrollY, progress: propProgress }) {
             </span>
           </div>
 
+          {/* Card 5.5: LinkedIn & GitHub Social Links Directly Below Email */}
+          <div className="grid grid-cols-2 gap-2">
+            <a
+              href="https://www.linkedin.com/in/deepan-d-b00a5b327/"
+              target="_blank"
+              rel="noreferrer"
+              className="glass-panel px-3 py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 text-xs text-white/80 hover:text-white hover:border-[#ff1e4b]/50 transition-colors group"
+            >
+              <span className="font-bold text-[#ff1e4b] group-hover:scale-110 transition-transform">in</span>
+              <span className="font-label-caps text-[11px] font-bold tracking-wider">LinkedIn</span>
+            </a>
+            <a
+              href="https://github.com/Deepan9884"
+              target="_blank"
+              rel="noreferrer"
+              className="glass-panel px-3 py-2 rounded-xl border border-white/10 flex items-center justify-center gap-1.5 text-xs text-white/80 hover:text-white hover:border-[#ff1e4b]/50 transition-colors group"
+            >
+              <span className="material-symbols-outlined text-sm text-[#ff1e4b] group-hover:scale-110 transition-transform">code</span>
+              <span className="font-label-caps text-[11px] font-bold tracking-wider">GitHub</span>
+            </a>
+          </div>
+
         </div>
 
         {/* Card 6: Full-Width Red CTA Button */}
@@ -146,18 +221,20 @@ function FixedMorphingNavbar({ scrollY, progress: propProgress }) {
 
       </motion.aside>
 
-      {/* === 2. DYNAMIC MORPHING NAV BUTTONS (Glide 2D from top hero position into sidebar slots) === */}
-      {NAV_ITEMS.map((item, idx) => (
-        <NavWordMorph
-          key={item.id}
-          item={item}
-          index={idx}
-          progress={progress}
-          pipeOpacity={pipeOpacity}
-          iconOpacity={iconOpacity}
-          active={activeSection === item.id}
-        />
-      ))}
+      {/* === 2. DYNAMIC MORPHING NAV BUTTONS (Desktop >= 768px: Glide 2D from top hero position into sidebar slots) === */}
+      <div className="hidden md:block">
+        {NAV_ITEMS.map((item, idx) => (
+          <NavWordMorph
+            key={item.id}
+            item={item}
+            index={idx}
+            progress={progress}
+            pipeOpacity={pipeOpacity}
+            iconOpacity={iconOpacity}
+            active={activeSection === item.id}
+          />
+        ))}
+      </div>
     </div>
   )
 }
@@ -165,7 +242,8 @@ function FixedMorphingNavbar({ scrollY, progress: propProgress }) {
 function NavWordMorph({ item, index, progress, pipeOpacity, iconOpacity, active }) {
   // 2D Morph Interpolation: Top section (35%) -> Sidebar slot (endTop)
   const top = useTransform(progress, p => `calc((1 - ${p}) * 35% + ${p} * ${item.endTop}px)`)
-  const left = useTransform(progress, p => `calc((1 - ${p}) * ${item.startLeft} + ${p} * 28px)`)
+  const left = useTransform(progress, p => `calc((1 - ${p}) * ${item.startLeft} + ${p} * 26px)`)
+  const width = useTransform(progress, p => p > 0.45 ? '258px' : 'auto')
   
   // Background pill morphs as it docks into the sidebar
   const bgOpacity = useTransform(progress, [0.3, 1], [0, 1])
@@ -176,45 +254,47 @@ function NavWordMorph({ item, index, progress, pipeOpacity, iconOpacity, active 
   return (
     <motion.a
       href={`#${item.id}`}
-      className={`absolute flex items-center gap-2.5 px-3 py-1.5 rounded-xl font-label-caps text-xs sm:text-sm font-extrabold tracking-wider pointer-events-auto transition-colors duration-200 z-50 ${
+      className={`absolute flex items-center justify-between px-3.5 py-1.5 rounded-xl font-label-caps text-xs sm:text-sm font-extrabold tracking-wider pointer-events-auto transition-all duration-200 z-50 ${
         active 
           ? 'font-black' 
           : 'text-white/80 hover:text-white'
       }`}
-      style={{ top, left }}
+      style={{ top, left, width }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 1.0, delay: 4.5 + (index * 0.12), ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.06 }}
+      whileHover={{ scale: 1.02 }}
     >
       {/* Background Pill highlighted in sidebar when docked */}
       <motion.div
-        className={`absolute inset-0 rounded-xl pointer-events-none -z-10 transition-colors ${
+        className={`absolute inset-0 rounded-xl pointer-events-none -z-10 transition-all ${
           active 
             ? 'bg-[#ff1e4b] shadow-[0_0_20px_rgba(255,30,75,0.5)]' 
-            : 'bg-white/5 border border-white/10'
+            : 'bg-white/5 border border-white/10 hover:bg-white/10'
         }`}
         style={{ opacity: bgOpacity }}
       />
 
-      {/* Icon fades in next to label as it enters the sidebar */}
-      <motion.span
-        className={`material-symbols-outlined text-base ${active ? 'text-white' : 'text-[#ff1e4b]'}`}
-        style={{ opacity: iconOpacity }}
-      >
-        {item.icon}
-      </motion.span>
-      
-      {active ? (
-        <motion.span 
-          style={{ color: activeTextColor }}
-          className="font-black drop-shadow-[0_0_12px_rgba(255,30,75,0.7)]"
+      <div className="flex items-center gap-2.5">
+        {/* Icon fades in next to label as it enters the sidebar */}
+        <motion.span
+          className={`material-symbols-outlined text-base flex-shrink-0 ${active ? 'text-white' : 'text-[#ff1e4b]'}`}
+          style={{ opacity: iconOpacity }}
         >
-          {item.label}
+          {item.icon}
         </motion.span>
-      ) : (
-        <span className="text-white/90 font-bold hover:text-white transition-colors">{item.label}</span>
-      )}
+        
+        {active ? (
+          <motion.span 
+            style={{ color: activeTextColor }}
+            className="font-black drop-shadow-[0_0_12px_rgba(255,30,75,0.7)]"
+          >
+            {item.label}
+          </motion.span>
+        ) : (
+          <span className="text-white/90 font-bold hover:text-white transition-colors">{item.label}</span>
+        )}
+      </div>
 
       {/* Hero Pipe Separator (fades out on scroll) */}
       {item.hasPipe && (

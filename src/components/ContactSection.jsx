@@ -8,7 +8,9 @@ function ContactSection() {
     email: '',
     message: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
     setFormData({
@@ -17,13 +19,42 @@ function ContactSection() {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      setFormData({ name: '', email: '', message: '' })
-    }, 3000)
+    setIsSubmitting(true)
+    setErrorMessage('')
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/deepan9210@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          _subject: `New Portfolio Inquiry from ${formData.name}`,
+          _template: 'table'
+        })
+      })
+
+      if (response.ok) {
+        setSubmitted(true)
+        setFormData({ name: '', email: '', message: '' })
+        setTimeout(() => {
+          setSubmitted(false)
+        }, 6000)
+      } else {
+        setErrorMessage('Failed to send message. Please try again.')
+      }
+    } catch (err) {
+      console.error(err)
+      setErrorMessage('Network error. Please check your internet connection.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const containerVariants = {
@@ -56,6 +87,28 @@ function ContactSection() {
       </div>
 
       <form onSubmit={handleSubmit} className="max-w-2xl mx-auto w-full space-y-6">
+        {submitted && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/50 text-emerald-300 text-center font-body-md text-sm shadow-[0_0_25px_rgba(16,185,129,0.3)] flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-emerald-400">check_circle</span>
+            <span>Thank you! Your message has been sent directly to <strong>deepan9210@gmail.com</strong>.</span>
+          </motion.div>
+        )}
+
+        {errorMessage && (
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 rounded-xl bg-rose-500/20 border border-rose-500/50 text-rose-300 text-center font-body-md text-sm flex items-center justify-center gap-2"
+          >
+            <span className="material-symbols-outlined text-rose-400">error</span>
+            <span>{errorMessage}</span>
+          </motion.div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <label htmlFor="name" className="block font-label-caps text-label-caps text-on-surface-variant mb-2 ml-1">
@@ -106,12 +159,13 @@ function ContactSection() {
 
         <motion.button 
           type="submit"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="w-full py-4 rounded-xl bg-vibrant-red text-white font-label-caps text-xs font-black tracking-wider uppercase shadow-[0_0_25px_rgba(255,30,75,0.4)] hover:shadow-[0_0_40px_rgba(255,30,75,0.7)] transition-all duration-300 mt-4 flex items-center justify-center gap-2"
+          disabled={isSubmitting}
+          whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
+          whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+          className="w-full py-4 rounded-xl bg-vibrant-red text-white font-label-caps text-xs font-black tracking-wider uppercase shadow-[0_0_25px_rgba(255,30,75,0.4)] hover:shadow-[0_0_40px_rgba(255,30,75,0.7)] transition-all duration-300 mt-4 flex items-center justify-center gap-2 disabled:opacity-60"
         >
-          <span>{submitted ? 'Message Sent!' : 'Send Message'}</span>
-          <span className="material-symbols-outlined">{submitted ? 'check' : 'send'}</span>
+          <span>{isSubmitting ? 'Sending Message...' : submitted ? 'Message Sent!' : 'Send Message'}</span>
+          <span className="material-symbols-outlined">{isSubmitting ? 'sync' : submitted ? 'check_circle' : 'send'}</span>
         </motion.button>
       </form>
 
@@ -124,13 +178,13 @@ function ContactSection() {
       >
         {/* Email Card */}
         <motion.div variants={itemVariants} className="h-full">
-          <a href="mailto:deepan9210@gmail.com" className="block h-full">
+          <a href="https://mail.google.com/mail/?view=cm&fs=1&to=deepan9210@gmail.com" target="_blank" rel="noreferrer" className="block h-full">
             <MagneticCard className="glass-panel p-6 rounded-2xl h-full border border-white/10 hover:border-[#ff1e4b]/60 transition-colors group">
               <div className="specular-edge"></div>
               <div className="inner-glow"></div>
               <div className="relative">
                 <span className="material-symbols-outlined text-[#ff1e4b] text-3xl mb-3 block group-hover:scale-110 transition-transform">mail</span>
-                <div className="font-label-caps text-white/60 mb-1 text-xs uppercase font-bold">Official Email</div>
+                <div className="font-label-caps text-white/60 mb-1 text-xs uppercase font-bold">Gmail Direct</div>
                 <div className="font-body-md text-white text-xs font-semibold break-all">deepan9210@gmail.com</div>
               </div>
             </MagneticCard>

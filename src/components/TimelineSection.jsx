@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll } from 'framer-motion'
 import SlideUp from './SlideUp'
 
 function TimelineSection() {
@@ -9,12 +9,6 @@ function TimelineSection() {
     target: containerRef,
     offset: ["start center", "end center"]
   })
-
-  const node1Opacity = useTransform(scrollYProgress, [0.0, 0.05], [0, 1])
-  const node2Opacity = useTransform(scrollYProgress, [0.20, 0.25], [0, 1])
-  const node3Opacity = useTransform(scrollYProgress, [0.42, 0.47], [0, 1])
-  const node4Opacity = useTransform(scrollYProgress, [0.65, 0.70], [0, 1])
-  const node5Opacity = useTransform(scrollYProgress, [0.85, 0.92], [0, 1])
 
   const milestones = [
     {
@@ -69,6 +63,17 @@ function TimelineSection() {
     }
   ]
 
+  // Small line-anchored dots at card entry & exit points (Heynesh.com style)
+  const dots = [
+    { cx: 960, cy: 80 },
+    { cx: 520, cy: 260 },
+    { cx: 480, cy: 420 },
+    { cx: 40, cy: 600 },
+    { cx: 520, cy: 940 },
+    { cx: 480, cy: 1280 },
+    { cx: 520, cy: 1620 }
+  ]
+
   return (
     <section ref={containerRef} className="py-24 pb-48 w-full relative bg-[#050505] min-h-[2100px] z-10" id="timeline">
       {/* Executive Header */}
@@ -89,39 +94,67 @@ function TimelineSection() {
       </div>
 
       <div className="timeline-wave-container relative w-full max-w-[1440px] mx-auto px-4 md:px-8 h-auto md:h-[1750px]">
-        {/* Fluid Waving Line SVG */}
+        {/* Mobile Vertical Glowing Timeline Line (< 768px) */}
+        <div className="md:hidden absolute left-6 top-4 bottom-4 w-1 bg-gradient-to-b from-[#ff1e4b] via-[#ff5277] to-[#ff1e4b] rounded-full opacity-60 shadow-[0_0_15px_#ff1e4b] z-0"></div>
+
+        {/* Continuous Diagonal Line SVG Passing BEHIND Panels (Desktop >= 768px, z-0) */}
         <svg className="hidden md:block absolute inset-0 w-full pointer-events-none z-0" style={{ height: '100%' }} preserveAspectRatio="none" viewBox="0 0 1000 1750">
           <defs>
-            <linearGradient id="waveGradient" x1="0%" x2="100%" y1="0%" y2="0%">
-              <stop offset="0%" stopColor="#ff1e4b"></stop>
-              <stop offset="50%" stopColor="#ff5277"></stop>
-              <stop offset="100%" stopColor="#ffffff"></stop>
+            <linearGradient id="waveGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+              <stop offset="0%" stopColor="#ff1e4b" stopOpacity="0.8"></stop>
+              <stop offset="50%" stopColor="#ff5277" stopOpacity="1"></stop>
+              <stop offset="100%" stopColor="#ff1e4b" stopOpacity="0.8"></stop>
             </linearGradient>
-            <filter id="waveGlow">
-              <feGaussianBlur result="blur" stdDeviation="5"></feGaussianBlur>
+            <filter id="waveGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur result="blur" stdDeviation="4"></feGaussianBlur>
               <feMerge>
                 <feMergeNode in="blur"></feMergeNode>
                 <feMergeNode in="SourceGraphic"></feMergeNode>
               </feMerge>
             </filter>
           </defs>
+
+          {/* Background Track Line */}
+          <path 
+            d="M 960,80 C 780,150 640,200 520,260 C 480,310 470,360 480,420 C 350,490 180,550 40,600 C 200,750 380,850 520,940 C 480,1080 460,1180 480,1280 C 350,1420 400,1520 520,1620" 
+            fill="none" 
+            stroke="rgba(255,30,75,0.2)" 
+            strokeWidth="3"
+          />
+
+          {/* Animated Sweeping Wavy Line */}
           <motion.path 
-            d="M 950,180 C 950,350 50,350 50,520 C 50,690 950,690 950,860 C 950,1030 50,1030 50,1200 C 50,1370 950,1370 950,1540" 
+            d="M 960,80 C 780,150 640,200 520,260 C 480,310 470,360 480,420 C 350,490 180,550 40,600 C 200,750 380,850 520,940 C 480,1080 460,1180 480,1280 C 350,1420 400,1520 520,1620" 
             fill="none" 
             filter="url(#waveGlow)" 
             stroke="url(#waveGradient)" 
-            strokeWidth="5"
+            strokeWidth="3.5"
             style={{ pathLength: scrollYProgress }}
-          ></motion.path>
-          
-          <motion.circle cx="950" cy="180" fill="#ff1e4b" r="14" style={{ opacity: node1Opacity }} className="shadow-[0_0_20px_#ff1e4b]"></motion.circle>
-          <motion.circle cx="50" cy="520" fill="#ff1e4b" r="14" style={{ opacity: node2Opacity }} className="shadow-[0_0_20px_#ff1e4b]"></motion.circle>
-          <motion.circle cx="950" cy="860" fill="#ff1e4b" r="14" style={{ opacity: node3Opacity }} className="shadow-[0_0_20px_#ff1e4b]"></motion.circle>
-          <motion.circle cx="50" cy="1200" fill="#ff1e4b" r="14" style={{ opacity: node4Opacity }} className="shadow-[0_0_20px_#ff1e4b]"></motion.circle>
-          <motion.circle cx="950" cy="1540" fill="#ff1e4b" r="14" style={{ opacity: node5Opacity }} className="shadow-[0_0_20px_#ff1e4b]"></motion.circle>
+          />
+
+          {/* Line-Anchored Small Dots (Heynesh.com Style) */}
+          {dots.map((dot, idx) => (
+            <g key={idx}>
+              <circle 
+                cx={dot.cx} 
+                cy={dot.cy} 
+                r="7" 
+                fill="#ff1e4b" 
+                stroke="#050505" 
+                strokeWidth="2.5" 
+                className="drop-shadow-[0_0_10px_rgba(255,30,75,0.9)]" 
+              />
+              <circle 
+                cx={dot.cx} 
+                cy={dot.cy} 
+                r="2.5" 
+                fill="#ffffff" 
+              />
+            </g>
+          ))}
         </svg>
 
-        {/* Staggered Zig-Zag Cards */}
+        {/* Staggered Zig-Zag Cards Rendering ON TOP of Line (z-10) */}
         <div className="relative z-10 w-full space-y-8 md:space-y-0 h-auto md:h-full">
           {milestones.map((m, idx) => (
             <motion.div 

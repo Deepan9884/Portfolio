@@ -5,6 +5,7 @@ import MagneticCard from './MagneticCard'
 
 function HackathonsSection() {
   const [activeHackathon, setActiveHackathon] = useState(null)
+  const [selectedView, setSelectedView] = useState('award') // 'award' or 'demo'
 
   const hackathons = [
     {
@@ -14,7 +15,9 @@ function HackathonsSection() {
       award: "1st Place Winner | March 2026 🏆",
       subtitle: "Hackathon Winner, Prismatic 2k26 | March 2026",
       date: "March 2026",
-      image: "/prismatic_ai.png",
+      image: "/prismatic.jpg",
+      awardImage: "/prismatic.jpg",
+      demoImage: "/prismatic_ai.png",
       bullets: [
         "Engineered end-to-end custom ML model trained on Hugging Face datasets combined with proprietary distress call dataset to achieve high-accuracy emergency detection and classification.",
         "Implemented advanced Tanglish (Tamil+English code-mixed language) support using NLP techniques and language detection pipeline for real-world emergency scenarios across India.",
@@ -31,7 +34,9 @@ function HackathonsSection() {
       award: "Avanzare v19 Hackathon Winner | July 2026 🥇",
       subtitle: "Avanzare v19 Hackathon Winner, Kongu Engineering College | July 2026",
       date: "July 2026",
-      image: "/openats_ai.png",
+      image: "/Avenzare.jpg",
+      awardImage: "/Avenzare.jpg",
+      demoImage: "/openats_ai.png",
       bullets: [
         "Designed and implemented full-stack self-hosted ATS platform with real-time resume screening, semantic search using pgvector embeddings, and intelligent candidate matching algorithms.",
         "Built sophisticated Frontend: Next.js + TypeScript + TailwindCSS with dark ops console aesthetic, animated pipeline rail showing live resume processing stages, kanban board for candidate triage, detailed comparison views.",
@@ -42,6 +47,11 @@ function HackathonsSection() {
       tags: ["Next.js", "TypeScript", "TailwindCSS", "Python", "pgvector", "vLLM / Ollama", "BullMQ", "SSE"]
     }
   ]
+
+  const handleCardHover = (hackathon) => {
+    setActiveHackathon(hackathon)
+    setSelectedView('award')
+  }
 
   return (
     <section className="py-24 px-margin_mobile md:px-margin_desktop max-w-[1440px] mx-auto min-h-screen flex flex-col justify-center relative" id="hackathons">
@@ -58,7 +68,7 @@ function HackathonsSection() {
         </SlideUp>
         <div className="h-2 w-44 bg-gradient-to-r from-transparent via-[#ff1e4b] to-transparent rounded-full shadow-[0_0_25px_rgba(255,30,75,0.8)] my-6 mx-auto"></div>
         <p className="font-body-lg text-white/90 text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed font-medium">
-          High-speed rapid prototyping under intense deadline pressure. Hover your cursor over any card to pop up winning photos & architectural breakdown (automatically fades when cursor moves away).
+          High-speed rapid prototyping under intense deadline pressure. Hover your cursor over any card to view official award-winning photos & architectural breakdowns.
         </p>
       </div>
 
@@ -70,7 +80,7 @@ function HackathonsSection() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            onMouseEnter={() => setActiveHackathon(h)}
+            onMouseEnter={() => handleCardHover(h)}
             onMouseLeave={() => setActiveHackathon(null)}
             className="group cursor-pointer"
           >
@@ -94,20 +104,21 @@ function HackathonsSection() {
                 </h3>
                 <div className="text-xs font-mono text-white/60 mb-6 italic">{h.subtitle}</div>
 
-                {/* Winning Photo Thumbnail Preview */}
+                {/* Award Winning Photo Thumbnail Preview */}
                 <div className="relative h-64 md:h-72 rounded-2xl overflow-hidden mb-6 border border-white/10 group-hover:border-[#ff1e4b]/60 transition-all">
                   <img 
-                    src={h.image} 
-                    alt={h.title}
+                    src={h.awardImage} 
+                    alt={`${h.title} Award Winning Photo`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-                    <span className="text-xs font-label-caps font-bold text-white bg-[#ff1e4b]/80 px-3 py-1 rounded-full backdrop-blur-md">
-                      Official Winning Photo 🏆
+                    <span className="text-xs font-label-caps font-bold text-white bg-[#ff1e4b]/90 px-3 py-1 rounded-full backdrop-blur-md shadow-[0_0_15px_rgba(255,30,75,0.6)] flex items-center gap-1.5">
+                      <span className="material-symbols-outlined text-sm text-yellow-300">emoji_events</span>
+                      Official Award Photo
                     </span>
                     <span className="text-xs font-mono text-white/90 bg-black/60 px-3 py-1 rounded-full backdrop-blur-md border border-white/20 group-hover:bg-[#ff1e4b] transition-colors">
-                      Hover Cursor to Pop Up ↗
+                      Hover to Expand ↗
                     </span>
                   </div>
                 </div>
@@ -170,22 +181,52 @@ function HackathonsSection() {
               </div>
 
               {/* Title */}
-              <h2 className="font-display-lg text-3xl sm:text-4xl md:text-5xl font-black text-white mb-8 leading-[1.15] tracking-tight">
+              <h2 className="font-display-lg text-3xl sm:text-4xl md:text-5xl font-black text-white mb-6 leading-[1.15] tracking-tight">
                 {activeHackathon.title}
               </h2>
 
-              {/* HUGE Winning Photo Display */}
-              <div className="relative rounded-[2rem] overflow-hidden mb-12 border-2 border-[#ff1e4b]/40 shadow-[0_0_50px_rgba(255,30,75,0.35)] group">
+              {/* Image Switcher Tabs */}
+              <div className="flex items-center gap-3 mb-6 bg-white/5 p-1.5 rounded-2xl border border-white/10 w-fit">
+                <button
+                  onClick={() => setSelectedView('award')}
+                  className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-label-caps font-bold tracking-wider transition-all flex items-center gap-2 ${
+                    selectedView === 'award'
+                      ? 'bg-[#ff1e4b] text-white shadow-[0_0_20px_rgba(255,30,75,0.5)]'
+                      : 'text-white/70 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">emoji_events</span>
+                  🏆 Award Winning Photo
+                </button>
+                <button
+                  onClick={() => setSelectedView('demo')}
+                  className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-label-caps font-bold tracking-wider transition-all flex items-center gap-2 ${
+                    selectedView === 'demo'
+                      ? 'bg-[#ff1e4b] text-white shadow-[0_0_20px_rgba(255,30,75,0.5)]'
+                      : 'text-white/70 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <span className="material-symbols-outlined text-sm">laptop_mac</span>
+                  💻 Project System Demo
+                </button>
+              </div>
+
+              {/* HUGE Winning Photo & Project Image Display */}
+              <div className="relative rounded-[2rem] overflow-hidden mb-12 border-2 border-[#ff1e4b]/40 shadow-[0_0_50px_rgba(255,30,75,0.35)] group bg-black/60">
                 <img 
-                  src={activeHackathon.image} 
+                  src={selectedView === 'award' ? activeHackathon.awardImage : activeHackathon.demoImage} 
                   alt={activeHackathon.title}
-                  className="w-full max-h-[500px] object-cover"
+                  className="w-full max-h-[520px] object-contain md:object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent pointer-events-none"></div>
                 <div className="absolute bottom-6 left-6 bg-black/85 backdrop-blur-xl px-6 py-3 rounded-2xl border border-white/20 flex items-center gap-3 shadow-2xl">
-                  <span className="material-symbols-outlined text-yellow-400 text-2xl">emoji_events</span>
+                  <span className="material-symbols-outlined text-yellow-400 text-2xl">
+                    {selectedView === 'award' ? 'emoji_events' : 'terminal'}
+                  </span>
                   <span className="text-sm md:text-base font-label-caps font-extrabold text-white tracking-wide">
-                    Official Award Ceremony Winning Photo
+                    {selectedView === 'award' 
+                      ? 'Official Hackathon Victory & Award Ceremony Photo 🏆' 
+                      : 'System Architecture & Live Application Screenshot 💻'}
                   </span>
                 </div>
               </div>
