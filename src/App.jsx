@@ -34,11 +34,11 @@ function App() {
   const rawNavProgress = useTransform(heroScrollProgress, [0, 0.35], [0, 1])
   const navProgress = useSpring(rawNavProgress, { stiffness: 300, damping: 30 })
 
-  const mainPaddingLeft = useTransform(navProgress, [0, 1], ["0px", "310px"])
+  const mainPaddingLeft = useTransform(navProgress, p => typeof window !== "undefined" && window.innerWidth >= 768 ? `${p * 310}px` : "0px")
 
   return (
     <CursorLightProvider>
-      <div className="font-body-md text-body-md bg-background antialiased relative overflow-x-clip cursor-none select-none">
+      <div className="font-body-md text-body-md bg-background antialiased relative overflow-x-clip md:cursor-none select-none">
         <Preloader />
         
         {/* Optimized GPU Grain Overlay */}

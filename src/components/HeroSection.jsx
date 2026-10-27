@@ -6,8 +6,6 @@ function HeroSection({ scrollY, heroScrollProgress }) {
   const { normalizedX, normalizedY } = useCursorLight() || {}
 
   // Hero photo & content opacity during sticky scroll section
-  // Phase 1 & Phase 2 (0 -> 0.55): Hero content remains 100% visible and static.
-  // Phase 3 (0.55 -> 0.85): Hero content completely fades out BEFORE sticky pin releases.
   const photoOpacity = useTransform(
     heroScrollProgress || scrollY,
     heroScrollProgress ? [0.6, 0.85] : [0, 300],
@@ -36,8 +34,16 @@ function HeroSection({ scrollY, heroScrollProgress }) {
   const orb2X = useTransform(normalizedX || useTransform(scrollY || heroScrollProgress, [0, 1], [0.5, 0.5]), [0, 1], [30, -30])
   const orb2Y = useTransform(normalizedY || useTransform(scrollY || heroScrollProgress, [0, 1], [0.5, 0.5]), [0, 1], [40, -40])
 
+  const traits = [
+    { icon: 'code', text: 'Fullstack Dev' },
+    { icon: 'science', text: 'SRM Research' },
+    { icon: 'emoji_events', text: 'Hackathons' },
+    { icon: 'workspace_premium', text: 'Marquee 2028' },
+    { icon: 'school', text: 'IT Scholar' },
+  ]
+
   return (
-    <section className="h-full relative w-full overflow-hidden flex flex-col justify-between px-4 sm:px-8 lg:px-12 pt-4 pb-4">
+    <section className="h-full relative w-full overflow-hidden flex flex-col justify-between px-3 sm:px-8 lg:px-12 pt-3 pb-3 sm:pt-4 sm:pb-4">
       {/* Floating Liquid Ambient Orbs */}
       <motion.div
         style={{ x: orb1X, y: orb1Y, opacity: heroContentOpacity }}
@@ -50,10 +56,10 @@ function HeroSection({ scrollY, heroScrollProgress }) {
 
       {/* 0. Giant Background Logo: DEEPAN. (z-10: Perfectly centered behind portrait photo z-20) */}
       <motion.div
-        className="absolute top-[4%] left-0 right-0 w-full flex justify-center items-center pointer-events-none z-10"
+        className="absolute top-[3%] sm:top-[4%] left-0 right-0 w-full flex justify-center items-center pointer-events-none z-10 px-4 pr-16 md:pr-4"
         style={{ opacity: heroContentOpacity }}
       >
-        <div className="font-display-lg font-black tracking-tighter text-vibrant-yellow leading-none whitespace-nowrap text-[16vw] flex items-center">
+        <div className="font-display-lg font-black tracking-tighter text-vibrant-yellow leading-none whitespace-nowrap text-[12vw] sm:text-[14vw] lg:text-[16vw] flex items-center">
           {['D', 'E', 'E', 'P', 'A', 'N'].map((char, idx) => (
             <motion.span
               key={idx}
@@ -89,14 +95,14 @@ function HeroSection({ scrollY, heroScrollProgress }) {
       >
         <motion.img 
           alt="Deepan D Portrait" 
-          className="h-[80vh] md:h-[95vh] lg:h-[110vh] max-h-[1400px] w-auto max-w-none object-contain object-bottom drop-shadow-2xl" 
+          className="h-[70vh] sm:h-[82vh] md:h-[94vh] lg:h-[106vh] max-h-[1350px] w-auto max-w-none object-contain object-bottom drop-shadow-[0_20px_50px_rgba(0,0,0,0.85)]" 
           src="/deepan_portrait_nobg.png"
           style={{
             opacity: photoOpacity,
             scale: photoScale,
             willChange: "opacity, transform",
-            maskImage: 'linear-gradient(to top, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%)',
-            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,1) 90%, rgba(0,0,0,0) 100%)'
+            maskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 98%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 98%)'
           }}
           onError={(e) => {
             e.target.src = '/deepan_portrait.jpeg'
@@ -106,85 +112,82 @@ function HeroSection({ scrollY, heroScrollProgress }) {
 
       {/* 2. Bottom Main Layout Grid (z-30: In front of portrait image waist) */}
       <motion.div 
-        className="relative z-30 w-full max-w-[1400px] mx-auto mt-auto pt-8"
+        className="relative z-30 w-full max-w-[1440px] mx-auto mt-auto pt-4 sm:pt-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent lg:bg-none pb-2 sm:pb-0"
         style={{ opacity: heroContentOpacity }}
       >
         
-        {/* Main 3-Column Overlay Row */}
+        {/* Main 3-Column Overlay Row: Left Content, Open Center for Portrait, Right Traits */}
         <motion.div 
-          className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-end pb-6"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-end pb-3 sm:pb-6"
           initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.2, delay: 5.2, ease: [0.16, 1, 0.3, 1] }}
         >
           
-          {/* LEFT COLUMN: Stacked Stats Cards */}
-          <div className="lg:col-span-3 flex flex-col gap-4 w-full max-w-[240px] mx-auto lg:mx-0">
-            <motion.div
-              className="flex flex-col items-center justify-center p-4 rounded-2xl glass-panel bg-white/5 border border-white/10 backdrop-blur-2xl w-[140px] hover:border-vibrant-yellow/40 transition-colors"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.0, delay: 5.2 }}
-              whileHover={{ scale: 1.04 }}
-            >
-              <div className="text-vibrant-yellow font-display-lg text-2xl font-black mb-1">2x</div>
-              <div className="font-label-caps text-[10px] text-center font-bold text-white tracking-wider">Hackathon Winner</div>
-            </motion.div>
-
-            <motion.div
-              className="flex flex-col items-center justify-center p-4 rounded-2xl glass-panel bg-white/5 border border-white/10 backdrop-blur-2xl w-[150px] hover:border-vibrant-yellow/40 transition-colors"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.0, delay: 5.5 }}
-              whileHover={{ scale: 1.04 }}
-            >
-              <div className="text-vibrant-yellow font-display-lg text-3xl sm:text-4xl font-black mb-1 leading-none">3rd Yr</div>
-              <div className="font-label-caps text-[10px] text-center font-bold leading-tight text-white tracking-wider">B.Tech IT<br/>Easwari</div>
-            </motion.div>
-          </div>
-
-          {/* CENTER COLUMN: Main Headline & Compact Buttons */}
-          <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left lg:pl-2">
-            <h1 className="font-headline-md text-4xl sm:text-5xl lg:text-7xl font-extrabold text-white leading-[1.05] tracking-tight mb-5 drop-shadow-2xl">
+          {/* LEFT COLUMN (lg:col-span-5): Main Headline, CTAs, and Stacked Quick Stats */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left">
+            <h1 className="font-headline-md text-3xl sm:text-5xl lg:text-[62px] xl:text-7xl font-extrabold text-white leading-[1.08] sm:leading-[1.05] tracking-tight mb-3 sm:mb-5 drop-shadow-2xl">
               Fullstack,<br/>
               Applied<br/>
               Differently.
             </h1>
 
-            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4 mt-2">
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-3 sm:gap-4 mb-4 sm:mb-6">
               <a
                 href="#contact"
-                className="liquid-glass-btn px-6 py-3 rounded-full font-label-caps text-xs tracking-wider shadow-lg"
+                className="liquid-glass-btn px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-label-caps text-xs tracking-wider shadow-lg"
               >
                 Let's Connect
               </a>
               <a
                 href="#timeline"
-                className="liquid-glass-btn px-6 py-3 rounded-full font-label-caps text-xs tracking-wider shadow-lg"
+                className="liquid-glass-btn px-5 py-2.5 sm:px-6 sm:py-3 rounded-full font-label-caps text-xs tracking-wider shadow-lg"
               >
                 My Journey
               </a>
             </div>
+
+            {/* Quick Stats Badges tucked neatly on the left */}
+            <div className="flex items-center justify-center lg:justify-start gap-2 sm:gap-3 flex-wrap sm:flex-nowrap">
+              <motion.div
+                className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl glass-panel bg-white/5 border border-white/10 backdrop-blur-2xl hover:border-vibrant-yellow/40 transition-colors flex-shrink-0"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 2.1 }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <span className="text-vibrant-yellow font-display-lg text-base sm:text-lg font-black">2x</span>
+                <span className="font-label-caps text-[9px] font-bold text-white tracking-wider uppercase whitespace-nowrap">Hackathon Winner</span>
+              </motion.div>
+
+              <motion.div
+                className="flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl glass-panel bg-white/5 border border-white/10 backdrop-blur-2xl hover:border-vibrant-yellow/40 transition-colors flex-shrink-0"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 2.3 }}
+                whileHover={{ scale: 1.03 }}
+              >
+                <span className="text-vibrant-yellow font-display-lg text-sm sm:text-base font-black whitespace-nowrap">3rd Yr</span>
+                <span className="font-label-caps text-[9px] font-bold text-white tracking-wider uppercase leading-tight whitespace-nowrap">B.Tech IT Easwari</span>
+              </motion.div>
+            </div>
           </div>
 
-          {/* RIGHT COLUMN: Feature Traits Panel */}
-          <div className="lg:col-span-3 flex justify-center lg:justify-end">
+          {/* CENTER COLUMN (lg:col-span-4): Clean open space reserved for Deepan's Portrait */}
+          <div className="hidden lg:block lg:col-span-4 pointer-events-none min-h-[50px]"></div>
+
+          {/* RIGHT COLUMN (lg:col-span-3): Desktop Feature Traits Panel */}
+          <div className="hidden lg:flex lg:col-span-3 justify-end">
             <div className="glass-panel p-5 sm:p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-2xl w-full max-w-[220px] flex flex-col gap-3.5">
               <div className="specular-edge"></div>
               <div className="inner-glow"></div>
-              {[
-                { icon: 'code', text: 'Fullstack Dev' },
-                { icon: 'science', text: 'SRM Research' },
-                { icon: 'emoji_events', text: 'Hackathons' },
-                { icon: 'workspace_premium', text: 'Marquee 2028' },
-                { icon: 'school', text: 'IT Scholar' },
-              ].map((trait, idx) => (
+              {traits.map((trait, idx) => (
                 <motion.div 
                   key={idx}
                   className="relative flex items-center gap-3 text-white font-label-caps text-xs font-bold tracking-wider"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 5.8 + (idx * 0.15), ease: "easeOut" }}
+                  transition={{ duration: 0.6, delay: 2.2 + (idx * 0.08), ease: "easeOut" }}
                   whileHover={{ x: 4 }}
                 >
                   <span className="material-symbols-outlined text-vibrant-yellow text-lg">{trait.icon}</span>
@@ -194,14 +197,27 @@ function HeroSection({ scrollY, heroScrollProgress }) {
             </div>
           </div>
 
+          {/* MOBILE ONLY: Compact Horizontal Traits Pills (< lg) */}
+          <div className="flex lg:hidden items-center justify-center gap-1.5 overflow-x-auto no-scrollbar py-1 w-full max-w-full flex-wrap">
+            {traits.map((trait, idx) => (
+              <div 
+                key={idx}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full glass-panel bg-white/5 border border-white/10 backdrop-blur-xl text-white font-label-caps text-[9px] font-bold tracking-wider"
+              >
+                <span className="material-symbols-outlined text-vibrant-yellow text-xs">{trait.icon}</span>
+                <span>{trait.text}</span>
+              </div>
+            ))}
+          </div>
+
         </motion.div>
 
-        {/* Bottom Corner Info Text Bar */}
+        {/* Bottom Corner Info Text Bar (Desktop & Tablets) */}
         <motion.div 
-          className="flex flex-col sm:flex-row justify-between items-start sm:items-end pt-5 border-t border-white/10 text-xs text-on-surface-variant gap-3"
+          className="hidden sm:flex flex-col sm:flex-row justify-between items-start sm:items-end pt-3 sm:pt-5 border-t border-white/10 text-xs text-on-surface-variant gap-3"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.2, delay: 6.5 }}
+          transition={{ duration: 1.0, delay: 2.5 }}
         >
           <div className="font-body-md leading-snug">
             Fullstack Developer & Researcher.<br/>

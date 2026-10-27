@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export default function CustomCursor() {
+
   const [isVisible, setIsVisible] = useState(false)
   const [isPointer, setIsPointer] = useState(false)
   const [isTextHover, setIsTextHover] = useState(false)
